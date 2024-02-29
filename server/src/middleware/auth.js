@@ -17,12 +17,12 @@ const protect = asyncHandler(async (req, res, next) => {
       next();
     } catch (error) {
       console.log(error);
-      res.status(401).json("not authorized");
+      res.status(401).json("Please login first");
     }
   }
 
   if (!token) {
-    res.status(401).json("not authorized no token");
+    res.status(401).json("Please login first");
   }
 });
 
