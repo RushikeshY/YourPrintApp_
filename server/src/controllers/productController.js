@@ -123,6 +123,46 @@ async function deleteProduct(req, res) {
 //     res.status(500).json({ message: err.message });
 //   }
 // }
+// async function getFilteredProducts(req, res) {
+//   try {
+//     let query = {};
+    
+//     // If category filter is provided, add it to the query
+//     if (req.query.category) {
+//       query.category = req.query.category;
+//     }
+    
+//     // If price range filter is provided, add it to the query
+//     if (req.query.priceRange) {
+//       const priceRange = req.query.priceRange.split('-');
+//       const minPrice = parseInt(priceRange[0]);
+//       const maxPrice = parseInt(priceRange[1]);
+//       query.sellingPrice = { $gte: minPrice, $lte: maxPrice };
+//     }
+
+//     // If search query is provided, add it to the query
+//     if (req.query.searchQuery) {
+//       const regex = new RegExp(req.query.searchQuery, 'i'); // Case-insensitive search
+//       query.$or = [
+//         { productTitle: regex },
+//         { keywords: regex }
+//       ];
+//     }
+
+//     // Pagination
+//     const page = parseInt(req.query.page) || 1;
+
+//     // console.log(page)
+//     const pageSize = 16; // Set the page size to 10 products
+//     const skip = (page - 1) * pageSize;
+
+//     const products = await Product.find(query).skip(skip).limit(pageSize);
+//     res.status(200).json(products);
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// }
+
 async function getFilteredProducts(req, res) {
   try {
     let query = {};
@@ -151,13 +191,11 @@ async function getFilteredProducts(req, res) {
 
     // Pagination
     const page = parseInt(req.query.page) || 1;
-
-    console.log(page)
-    const pageSize = 10; // Set the page size to 10 products
+    const pageSize = 12; // Set the page size to 16 products
     const skip = (page - 1) * pageSize;
-
+    const total = await Product.find()
     const products = await Product.find(query).skip(skip).limit(pageSize);
-    res.status(200).json(products);
+    res.status(200).json({products,total:total.length});
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
