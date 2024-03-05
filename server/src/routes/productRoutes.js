@@ -8,4 +8,6 @@ router.get('/getall', productController.getFilteredProducts);
 router.post('/create', authMiddleware.protect, authMiddleware.authorizeAdmin, productController.createProduct);
 router.delete('/:productId', authMiddleware.protect, authMiddleware.authorizeAdmin, productController.deleteProduct);
 router.get('/:id', productController.getProductById);
+router.post('/createMultiple',  productController.createMultipleProducts);
+
 module.exports = router;

@@ -2,7 +2,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-const cookie = require('cookie');
+const cookie = require("cookie");
 
 const config = require("../config/config");
 const User = require("../models/User");
@@ -50,7 +50,7 @@ async function sendOTP(req, res) {
     await user.save();
 
     const transporter = nodemailer.createTransport({
-      service: 'Gmail',
+      service: "Gmail",
       auth: {
         user: process.env.EMAIL, // Access email from environment variable
         pass: process.env.PASSWORD, // Access password from environment variable
@@ -167,6 +167,8 @@ async function login(req, res) {
     }
 
     let user;
+
+    
     if (password) {
       // Email/password based login
       if (!password) {
@@ -212,19 +214,22 @@ async function login(req, res) {
     const token = generateToken(user._id, user.email, user.role);
 
     // Store token in cookie
-    res.setHeader('Set-Cookie', cookie.serialize('token', token, {
-      httpOnly: true,
-      maxAge: 3600, // Expires in 1 hour (adjust as needed)
-      sameSite: 'strict',
-      secure: process.env.NODE_ENV === 'production' // Set to true in production
-    }));
+    res.setHeader(
+      "Set-Cookie",
+      cookie.serialize("token", token, {
+        httpOnly: true,
+        maxAge: 3600, // Expires in 1 hour (adjust as needed)
+        sameSite: "strict",
+        secure: process.env.NODE_ENV === "production", // Set to true in production
+      })
+    );
 
     res.status(200).json({
       message: "Login successful",
       user: user.email,
       _id: user.id,
       name: user.name,
-      token: token
+      token: token,
     });
     // res
     //   .status(200)
@@ -252,11 +257,10 @@ logoutUser = async (req, res) => {
   });
 };
 
-
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "30d",
   });
 };
 
-module.exports = { register, login, sendOTP, verifyOTP,logoutUser };
+module.exports = { register, login, sendOTP, verifyOTP, logoutUser };
