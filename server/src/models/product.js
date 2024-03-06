@@ -45,7 +45,7 @@ const productSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
-        enum: ['male', 'female', 'kids', 'home decor', 'electronics', 'sports', 'books', 'fashion', 'beauty', 'others'],
+        enum: ['seeds', 'fertilizers', 'crop-protection', 'tools-equipment', 'livestock-care', 'others'],
     },
     userId: {
         type: Schema.Types.ObjectId,
